@@ -1,0 +1,8 @@
+pandas
+cape-privacy
+jupyter
+notebook
+Sphinx
+flake8
+mypy
+python-dotenv>=0.5.1

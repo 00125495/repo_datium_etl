@@ -1,0 +1,6 @@
+FROM repo_datium_etl-image-base
+
+COPY . /work
+WORKDIR /work
+
+ENTRYPOINT ["/bin/bash"]

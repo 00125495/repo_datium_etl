@@ -1,0 +1,8 @@
+label: pii_policy
+version: 1
+rules:
+  - match:
+      name: name
+    actions:
+      - transform:
+          type: "tokenizer"
