@@ -10,7 +10,7 @@ A comprehensive requirement analysis portal with agentic AI capabilities that he
 - **AI-Powered Validation**: Real-time requirement validation using OpenAI/Anthropic APIs
 - **User Story Generation**: Automatic generation of user stories from requirements
 - **Sprint Planning**: Organize user stories by sprints with story point estimation
-- **DevOps Integration**: JIRA and GitHub issue integration for user stories
+- **DevOps Integration**: JIRA, GitHub, and **Azure DevOps** integration for user stories
 
 ### AI Capabilities
 - **Real-time Validation**: AI analyzes requirements as you type
@@ -18,6 +18,11 @@ A comprehensive requirement analysis portal with agentic AI capabilities that he
 - **Automated User Stories**: Generate well-structured user stories from requirements
 - **Quality Scoring**: AI scoring system to measure requirement completeness
 - **Batch Processing**: Validate multiple requirements simultaneously
+
+### DevOps Integrations
+- **Azure DevOps**: Full work item integration with bi-directional sync
+- **JIRA**: Link user stories to JIRA tickets
+- **GitHub**: Connect user stories to GitHub issues
 
 ### Technical Features
 - **Modern Stack**: React + TypeScript frontend, FastAPI backend
@@ -38,8 +43,9 @@ A comprehensive requirement analysis portal with agentic AI capabilities that he
          │                       │                       │
          ▼                       ▼                       ▼
 ┌─────────────────┐    ┌─────────────────┐    ┌─────────────────┐
-│   UI Components │    │   Database      │    │   Background    │
-│   (TailwindCSS) │    │   (PostgreSQL)  │    │   Tasks (Redis) │
+│   UI Components │    │   Database      │    │   DevOps APIs   │
+│   (TailwindCSS) │    │   (PostgreSQL)  │    │   (Azure/JIRA/  │
+│                 │    │                 │    │    GitHub)      │
 └─────────────────┘    └─────────────────┘    └─────────────────┘
 ```
 
@@ -61,6 +67,7 @@ A comprehensive requirement analysis portal with agentic AI capabilities that he
 - **Redis** for caching and background tasks
 - **Pydantic** for data validation
 - **OpenAI/Anthropic** for AI services
+- **HTTPX** for external API integration
 
 ### DevOps
 - **Docker** and Docker Compose
@@ -75,6 +82,7 @@ A comprehensive requirement analysis portal with agentic AI capabilities that he
 - Python 3.11+ (for local development)
 - OpenAI API key (optional, for AI features)
 - Anthropic API key (optional, for AI features)
+- Azure DevOps Personal Access Token (optional, for Azure DevOps integration)
 
 ## 🚀 Quick Start
 
@@ -160,7 +168,14 @@ npm run dev
 1. Go to User Stories section
 2. Filter by sprint number
 3. Manage story points and priorities
-4. Link to JIRA tickets or GitHub issues
+4. Link to JIRA tickets, GitHub issues, or Azure DevOps work items
+
+### 5. Azure DevOps Integration
+1. Go to Project Settings → Azure DevOps Integration
+2. Configure your Azure DevOps organization and project
+3. Add your Personal Access Token
+4. Test the connection
+5. Sync user stories to Azure DevOps work items
 
 ## 🤖 AI Features Configuration
 
@@ -183,7 +198,40 @@ ANTHROPIC_API_KEY=your-anthropic-api-key-here
 - **Technical Feasibility**: Checks for technical implementation considerations
 - **Testability**: Validates acceptance criteria and testing approaches
 
-## 🔌 API Endpoints
+## 🔌 Azure DevOps Integration
+
+### Setup Steps
+1. **Create Personal Access Token**: 
+   - Go to Azure DevOps → User Settings → Personal Access Tokens
+   - Create token with "Work Items (Read & Write)" permissions
+
+2. **Configure Integration**:
+   - Navigate to your project settings
+   - Add Azure DevOps integration
+   - Enter organization URL (e.g., `https://dev.azure.com/yourorg`)
+   - Enter project name
+   - Add Personal Access Token
+
+3. **Test Connection**:
+   - Use the "Test Connection" button to verify setup
+   - View available work item types and iterations
+
+### Features
+- **Work Item Creation**: Automatically create Azure DevOps work items from user stories
+- **Bi-directional Sync**: Sync changes between the portal and Azure DevOps
+- **Status Updates**: Pull status updates from Azure DevOps work items
+- **Bulk Operations**: Sync multiple user stories at once
+- **Custom Mapping**: Configure work item types, area paths, and iterations
+
+### API Endpoints
+- `POST /api/v1/azure-devops/test-connection` - Test Azure DevOps connection
+- `POST /api/v1/azure-devops/integrations` - Create integration
+- `GET /api/v1/azure-devops/integrations/{project_id}` - Get integration
+- `POST /api/v1/azure-devops/sync/user-story` - Sync single user story
+- `POST /api/v1/azure-devops/sync/project` - Sync all project stories
+- `GET /api/v1/azure-devops/sync/status/{project_id}` - Get sync status
+
+## 🔌 All API Endpoints
 
 ### Projects
 - `GET /api/v1/projects` - List all projects
@@ -210,6 +258,12 @@ ANTHROPIC_API_KEY=your-anthropic-api-key-here
 - `POST /api/v1/ai/generate-stories` - Generate user stories
 - `GET /api/v1/ai/ai-insights/{project_id}` - Get AI analytics
 
+### Azure DevOps
+- `POST /api/v1/azure-devops/test-connection` - Test connection
+- `POST /api/v1/azure-devops/integrations` - Create integration
+- `POST /api/v1/azure-devops/sync/user-story` - Sync user story
+- `POST /api/v1/azure-devops/sync/project` - Sync project
+
 ## 🔒 Security Features
 
 - **Input Validation**: All inputs are validated using Pydantic
@@ -217,11 +271,12 @@ ANTHROPIC_API_KEY=your-anthropic-api-key-here
 - **Environment Variables**: Sensitive data stored in environment variables
 - **API Rate Limiting**: Built-in rate limiting for API endpoints
 - **SQL Injection Prevention**: SQLAlchemy ORM prevents SQL injection
+- **Token Security**: Azure DevOps PATs stored securely
 
 ## 📈 Performance Features
 
 - **Caching**: Redis caching for frequently accessed data
-- **Background Tasks**: Async processing for AI operations
+- **Background Tasks**: Async processing for AI operations and sync
 - **Database Optimization**: Indexed queries and efficient relationships
 - **Lazy Loading**: Frontend components load data on demand
 - **Query Optimization**: TanStack Query for efficient data fetching
@@ -317,6 +372,12 @@ For support and questions:
 - Check API key permissions and quotas
 - Review AI service logs for errors
 
+**Azure DevOps integration issues:**
+- Verify Personal Access Token has correct permissions
+- Check organization URL format (should include https://)
+- Ensure project name is exactly as it appears in Azure DevOps
+- Test connection using the built-in test feature
+
 **Database connection issues:**
 - Check PostgreSQL service status
 - Verify database credentials
@@ -328,3 +389,4 @@ The application includes health check endpoints:
 - Backend health: `GET /health`
 - Database connection: Built into health check
 - AI services: Status included in health check
+- Azure DevOps connectivity: Test via API endpoints
