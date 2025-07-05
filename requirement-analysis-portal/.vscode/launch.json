@@ -1,0 +1,97 @@
+{
+  "version": "0.2.0",
+  "configurations": [
+    {
+      "name": "🐍 Python: FastAPI Backend",
+      "type": "python",
+      "request": "launch",
+      "program": "${workspaceFolder}/backend/app/main.py",
+      "cwd": "${workspaceFolder}/backend",
+      "env": {
+        "PYTHONPATH": "${workspaceFolder}/backend"
+      },
+      "args": [],
+      "console": "integratedTerminal",
+      "autoReload": {
+        "enable": true
+      }
+    },
+    {
+      "name": "🐍 Python: Run Tests",
+      "type": "python",
+      "request": "launch",
+      "module": "pytest",
+      "cwd": "${workspaceFolder}/backend",
+      "env": {
+        "PYTHONPATH": "${workspaceFolder}/backend"
+      },
+      "args": [
+        "tests/",
+        "-v",
+        "--tb=short"
+      ],
+      "console": "integratedTerminal"
+    },
+    {
+      "name": "🐍 Python: Azure DevOps Tests",
+      "type": "python",
+      "request": "launch",
+      "module": "pytest",
+      "cwd": "${workspaceFolder}/backend",
+      "env": {
+        "PYTHONPATH": "${workspaceFolder}/backend"
+      },
+      "args": [
+        "tests/test_azure_devops.py",
+        "-v",
+        "--tb=short"
+      ],
+      "console": "integratedTerminal"
+    },
+    {
+      "name": "🔧 Docker: Backend Service",
+      "type": "docker",
+      "request": "launch",
+      "preLaunchTask": "docker-run: backend",
+      "python": {
+        "pathMappings": [
+          {
+            "localRoot": "${workspaceFolder}/backend",
+            "remoteRoot": "/app"
+          }
+        ],
+        "projectType": "fastapi"
+      }
+    },
+    {
+      "name": "⚛️  React: Frontend Debug",
+      "type": "node",
+      "request": "launch",
+      "cwd": "${workspaceFolder}/frontend",
+      "runtimeExecutable": "npm",
+      "runtimeArgs": ["run", "dev"]
+    },
+    {
+      "name": "🌐 Chrome: Debug Frontend",
+      "type": "chrome",
+      "request": "launch",
+      "url": "http://localhost:3000",
+      "webRoot": "${workspaceFolder}/frontend/src",
+      "sourceMaps": true
+    },
+    {
+      "name": "🧪 Test: Azure DevOps Integration",
+      "type": "node",
+      "request": "launch",
+      "program": "${workspaceFolder}/test_azure_devops.sh",
+      "console": "integratedTerminal"
+    }
+  ],
+  "compounds": [
+    {
+      "name": "🚀 Full Stack Debug",
+      "configurations": ["🐍 Python: FastAPI Backend", "⚛️  React: Frontend Debug"],
+      "stopAll": true
+    }
+  ]
+}

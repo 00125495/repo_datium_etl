@@ -1,0 +1,253 @@
+{
+  "version": "2.0.0",
+  "tasks": [
+    {
+      "label": "🐳 Docker: Start All Services",
+      "type": "shell",
+      "command": "docker-compose",
+      "args": ["up", "--build", "-d"],
+      "group": "build",
+      "presentation": {
+        "echo": true,
+        "reveal": "always",
+        "focus": false,
+        "panel": "shared",
+        "showReuseMessage": true,
+        "clear": false
+      },
+      "problemMatcher": []
+    },
+    {
+      "label": "🐳 Docker: Stop All Services",
+      "type": "shell",
+      "command": "docker-compose",
+      "args": ["down"],
+      "group": "build",
+      "presentation": {
+        "echo": true,
+        "reveal": "always",
+        "focus": false,
+        "panel": "shared"
+      },
+      "problemMatcher": []
+    },
+    {
+      "label": "🐳 Docker: View Logs",
+      "type": "shell",
+      "command": "docker-compose",
+      "args": ["logs", "-f"],
+      "group": "test",
+      "presentation": {
+        "echo": true,
+        "reveal": "always",
+        "focus": true,
+        "panel": "dedicated"
+      },
+      "problemMatcher": []
+    },
+    {
+      "label": "🐍 Python: Install Dependencies",
+      "type": "shell",
+      "command": "pip",
+      "args": ["install", "-r", "requirements.txt"],
+      "options": {
+        "cwd": "${workspaceFolder}/backend"
+      },
+      "group": "build",
+      "presentation": {
+        "echo": true,
+        "reveal": "always",
+        "focus": false,
+        "panel": "shared"
+      },
+      "problemMatcher": []
+    },
+    {
+      "label": "🐍 Python: Run Backend Server",
+      "type": "shell",
+      "command": "uvicorn",
+      "args": ["app.main:app", "--reload", "--host", "0.0.0.0", "--port", "8000"],
+      "options": {
+        "cwd": "${workspaceFolder}/backend"
+      },
+      "group": "build",
+      "presentation": {
+        "echo": true,
+        "reveal": "always",
+        "focus": false,
+        "panel": "dedicated"
+      },
+      "problemMatcher": []
+    },
+    {
+      "label": "🐍 Python: Run All Tests",
+      "type": "shell",
+      "command": "python",
+      "args": ["-m", "pytest", "tests/", "-v"],
+      "options": {
+        "cwd": "${workspaceFolder}/backend"
+      },
+      "group": "test",
+      "presentation": {
+        "echo": true,
+        "reveal": "always",
+        "focus": true,
+        "panel": "dedicated"
+      },
+      "problemMatcher": [
+        {
+          "owner": "python",
+          "fileLocation": ["relative", "${workspaceFolder}/backend"],
+          "pattern": {
+            "regexp": "^(.*):(\\d+):\\s+(.*)",
+            "file": 1,
+            "line": 2,
+            "message": 3
+          }
+        }
+      ]
+    },
+    {
+      "label": "🐍 Python: Run Azure DevOps Tests",
+      "type": "shell",
+      "command": "python",
+      "args": ["-m", "pytest", "tests/test_azure_devops.py", "-v"],
+      "options": {
+        "cwd": "${workspaceFolder}/backend"
+      },
+      "group": "test",
+      "presentation": {
+        "echo": true,
+        "reveal": "always",
+        "focus": true,
+        "panel": "dedicated"
+      },
+      "problemMatcher": []
+    },
+    {
+      "label": "⚛️  Frontend: Install Dependencies",
+      "type": "shell",
+      "command": "npm",
+      "args": ["install"],
+      "options": {
+        "cwd": "${workspaceFolder}/frontend"
+      },
+      "group": "build",
+      "presentation": {
+        "echo": true,
+        "reveal": "always",
+        "focus": false,
+        "panel": "shared"
+      },
+      "problemMatcher": []
+    },
+    {
+      "label": "⚛️  Frontend: Start Dev Server",
+      "type": "shell",
+      "command": "npm",
+      "args": ["run", "dev"],
+      "options": {
+        "cwd": "${workspaceFolder}/frontend"
+      },
+      "group": "build",
+      "presentation": {
+        "echo": true,
+        "reveal": "always",
+        "focus": false,
+        "panel": "dedicated"
+      },
+      "problemMatcher": []
+    },
+    {
+      "label": "⚛️  Frontend: Build Production",
+      "type": "shell",
+      "command": "npm",
+      "args": ["run", "build"],
+      "options": {
+        "cwd": "${workspaceFolder}/frontend"
+      },
+      "group": "build",
+      "presentation": {
+        "echo": true,
+        "reveal": "always",
+        "focus": false,
+        "panel": "shared"
+      },
+      "problemMatcher": []
+    },
+    {
+      "label": "🧪 Test: Azure DevOps Integration (Basic)",
+      "type": "shell",
+      "command": "./test_azure_devops.sh",
+      "group": "test",
+      "presentation": {
+        "echo": true,
+        "reveal": "always",
+        "focus": true,
+        "panel": "dedicated"
+      },
+      "problemMatcher": []
+    },
+    {
+      "label": "🧪 Test: Azure DevOps Integration (Real)",
+      "type": "shell",
+      "command": "./test_real_azure_devops.sh",
+      "group": "test",
+      "presentation": {
+        "echo": true,
+        "reveal": "always",
+        "focus": true,
+        "panel": "dedicated"
+      },
+      "problemMatcher": []
+    },
+    {
+      "label": "🔧 Format: Python Code",
+      "type": "shell",
+      "command": "black",
+      "args": ["--line-length", "88", "app/"],
+      "options": {
+        "cwd": "${workspaceFolder}/backend"
+      },
+      "group": "build",
+      "presentation": {
+        "echo": true,
+        "reveal": "silent",
+        "focus": false,
+        "panel": "shared"
+      },
+      "problemMatcher": []
+    },
+    {
+      "label": "🔧 Format: Frontend Code",
+      "type": "shell",
+      "command": "npm",
+      "args": ["run", "format"],
+      "options": {
+        "cwd": "${workspaceFolder}/frontend"
+      },
+      "group": "build",
+      "presentation": {
+        "echo": true,
+        "reveal": "silent",
+        "focus": false,
+        "panel": "shared"
+      },
+      "problemMatcher": []
+    },
+    {
+      "label": "📊 Database: Connect",
+      "type": "shell",
+      "command": "docker-compose",
+      "args": ["exec", "postgres", "psql", "-U", "postgres", "-d", "requirement_portal"],
+      "group": "test",
+      "presentation": {
+        "echo": true,
+        "reveal": "always",
+        "focus": true,
+        "panel": "dedicated"
+      },
+      "problemMatcher": []
+    }
+  ]
+}

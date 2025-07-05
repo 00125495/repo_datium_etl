@@ -1,0 +1,267 @@
+### Azure DevOps Integration API Testing
+### Use this file with the REST Client extension in VS Code
+
+@baseUrl = http://localhost:8000/api/v1
+@azureDevOpsBaseUrl = {{baseUrl}}/azure-devops
+
+### Variables for testing
+@testOrgUrl = https://dev.azure.com/testorg
+@testProject = TestProject
+@testToken = fake-token-for-testing
+
+###############################################
+# Azure DevOps Connection Testing
+###############################################
+
+### Test Azure DevOps Connection (with fake credentials)
+POST {{azureDevOpsBaseUrl}}/test-connection
+Content-Type: application/json
+
+{
+  "organization_url": "{{testOrgUrl}}",
+  "project_name": "{{testProject}}",
+  "personal_access_token": "{{testToken}}"
+}
+
+### Test Azure DevOps Connection (with real credentials - update variables above)
+# POST {{azureDevOpsBaseUrl}}/test-connection
+# Content-Type: application/json
+# 
+# {
+#   "organization_url": "https://dev.azure.com/yourorganization",
+#   "project_name": "YourProject",
+#   "personal_access_token": "your-real-token-here"
+# }
+
+###############################################
+# Project Management
+###############################################
+
+### Create Test Project
+POST {{baseUrl}}/projects
+Content-Type: application/json
+
+{
+  "name": "Azure DevOps Test Project",
+  "description": "Test project for Azure DevOps integration testing",
+  "azure_devops_organization": "{{testOrgUrl}}",
+  "azure_devops_project": "{{testProject}}"
+}
+
+### Get Projects List
+GET {{baseUrl}}/projects
+
+### Get Specific Project (replace 1 with actual project ID)
+GET {{baseUrl}}/projects/1
+
+###############################################
+# Azure DevOps Integration Management
+###############################################
+
+### Create Azure DevOps Integration (replace project_id with actual ID)
+POST {{azureDevOpsBaseUrl}}/integrations
+Content-Type: application/json
+
+{
+  "project_id": 1,
+  "organization_url": "{{testOrgUrl}}",
+  "project_name": "{{testProject}}",
+  "personal_access_token": "{{testToken}}",
+  "default_work_item_type": "User Story",
+  "default_area_path": "TestProject",
+  "default_iteration_path": "TestProject\\Sprint 1",
+  "auto_sync_enabled": false
+}
+
+### Get Azure DevOps Integration for Project
+GET {{azureDevOpsBaseUrl}}/integrations/1
+
+### Update Azure DevOps Integration
+PUT {{azureDevOpsBaseUrl}}/integrations/1
+Content-Type: application/json
+
+{
+  "project_id": 1,
+  "organization_url": "{{testOrgUrl}}",
+  "project_name": "{{testProject}}",
+  "personal_access_token": "{{testToken}}",
+  "default_work_item_type": "Task",
+  "auto_sync_enabled": true
+}
+
+### Delete Azure DevOps Integration
+DELETE {{azureDevOpsBaseUrl}}/integrations/1
+
+###############################################
+# Requirements and User Stories
+###############################################
+
+### Create Test Requirement
+POST {{baseUrl}}/requirements
+Content-Type: application/json
+
+{
+  "title": "Azure DevOps Integration Test Requirement",
+  "description": "This requirement tests the Azure DevOps integration functionality",
+  "type": "software",
+  "priority": "medium",
+  "project_id": 1,
+  "business_value": "Enable seamless integration with Azure DevOps for better project management",
+  "acceptance_criteria": "1. User stories can be synced to Azure DevOps\n2. Work items are created with correct fields\n3. Bi-directional sync works properly"
+}
+
+### Create Test User Story
+POST {{baseUrl}}/user-stories
+Content-Type: application/json
+
+{
+  "title": "Test Azure DevOps Sync User Story",
+  "description": "As a developer, I want to sync user stories to Azure DevOps so that I can track progress in both systems",
+  "project_id": 1,
+  "requirement_id": 1,
+  "story_points": 8,
+  "priority": "high",
+  "sprint_number": 1,
+  "acceptance_criteria": "Given a user story in the portal\nWhen I trigger sync to Azure DevOps\nThen a work item should be created with all relevant fields"
+}
+
+### Get User Stories
+GET {{baseUrl}}/user-stories?project_id=1
+
+###############################################
+# Azure DevOps Synchronization
+###############################################
+
+### Sync Single User Story to Azure DevOps
+POST {{azureDevOpsBaseUrl}}/sync/user-story
+Content-Type: application/json
+
+{
+  "user_story_id": 1,
+  "create_work_item": true,
+  "work_item_type": "User Story",
+  "assigned_to": "test@example.com"
+}
+
+### Sync All User Stories in Project
+POST {{azureDevOpsBaseUrl}}/sync/project
+Content-Type: application/json
+
+{
+  "project_id": 1,
+  "sync_all_stories": false,
+  "work_item_type": "User Story"
+}
+
+### Pull Status from Azure DevOps
+POST {{azureDevOpsBaseUrl}}/sync/pull-status/1
+
+### Get Sync Status for Project
+GET {{azureDevOpsBaseUrl}}/sync/status/1
+
+### Manually Link User Story to Work Item
+PATCH {{azureDevOpsBaseUrl}}/user-stories/1/azure-devops
+Content-Type: application/json
+
+{
+  "work_item_id": 1234,
+  "work_item_url": "https://dev.azure.com/testorg/TestProject/_workitems/edit/1234"
+}
+
+###############################################
+# Azure DevOps Metadata
+###############################################
+
+### Get Available Work Item Types
+GET {{azureDevOpsBaseUrl}}/work-item-types/1
+
+###############################################
+# Health Check
+###############################################
+
+### Backend Health Check
+GET {{baseUrl}}/../../health
+
+### API Documentation
+GET {{baseUrl}}/../../docs
+
+###############################################
+# Bulk Operations Testing
+###############################################
+
+### Create Multiple Requirements
+POST {{baseUrl}}/requirements/bulk
+Content-Type: application/json
+
+{
+  "project_id": 1,
+  "requirements": [
+    {
+      "title": "First Bulk Requirement",
+      "description": "First requirement for bulk testing",
+      "type": "software",
+      "priority": "medium",
+      "project_id": 1
+    },
+    {
+      "title": "Second Bulk Requirement", 
+      "description": "Second requirement for bulk testing",
+      "type": "data_platform",
+      "priority": "high",
+      "project_id": 1
+    }
+  ]
+}
+
+### Create Multiple User Stories
+POST {{baseUrl}}/user-stories/bulk
+Content-Type: application/json
+
+{
+  "project_id": 1,
+  "user_stories": [
+    {
+      "title": "First Bulk User Story",
+      "description": "First user story for bulk testing",
+      "project_id": 1,
+      "story_points": 5,
+      "priority": "medium",
+      "sprint_number": 1
+    },
+    {
+      "title": "Second Bulk User Story",
+      "description": "Second user story for bulk testing", 
+      "project_id": 1,
+      "story_points": 3,
+      "priority": "low",
+      "sprint_number": 1
+    }
+  ]
+}
+
+###############################################
+# Error Testing
+###############################################
+
+### Test Invalid Project ID
+GET {{azureDevOpsBaseUrl}}/integrations/999
+
+### Test Invalid User Story Sync
+POST {{azureDevOpsBaseUrl}}/sync/user-story
+Content-Type: application/json
+
+{
+  "user_story_id": 999,
+  "create_work_item": true,
+  "work_item_type": "User Story"
+}
+
+### Test Invalid Connection
+POST {{azureDevOpsBaseUrl}}/test-connection
+Content-Type: application/json
+
+{
+  "organization_url": "invalid-url",
+  "project_name": "NonExistentProject",
+  "personal_access_token": "invalid-token"
+}

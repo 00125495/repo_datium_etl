@@ -1,0 +1,43 @@
+{
+  "recommendations": [
+    // Python Development
+    "ms-python.python",
+    "ms-python.pylint",
+    "ms-python.black-formatter",
+    "ms-python.isort",
+    
+    // TypeScript/React Development
+    "bradlc.vscode-tailwindcss",
+    "esbenp.prettier-vscode",
+    "ms-vscode.vscode-typescript-next",
+    "dbaeumer.vscode-eslint",
+    
+    // Docker & DevOps
+    "ms-vscode-remote.remote-containers",
+    "ms-vscode-remote.remote-ssh",
+    "ms-azuretools.vscode-docker",
+    
+    // Database
+    "mtxr.sqltools",
+    "mtxr.sqltools-driver-pg",
+    
+    // API Development
+    "humao.rest-client",
+    "42crunch.vscode-openapi",
+    
+    // General Development
+    "ms-vscode.vscode-json",
+    "redhat.vscode-yaml",
+    "streetsidesoftware.code-spell-checker",
+    "gruntfuggly.todo-tree",
+    "eamodio.gitlens",
+    
+    // Testing
+    "ms-python.pytest",
+    "orta.vscode-jest",
+    
+    // Markdown
+    "yzhang.markdown-all-in-one",
+    "shd101wyy.markdown-preview-enhanced"
+  ]
+}
